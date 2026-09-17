@@ -1,0 +1,17 @@
+{
+  "name": "capstone",
+  "private": true,
+  "scripts": {
+    "web:dev": "pnpm --filter web dev",
+    "web:build": "pnpm --filter web build",
+    "web:lint": "pnpm --filter web lint",
+    "web:format": "pnpm --filter web format",
+    "web:format:check": "pnpm --filter web format:check",
+    "api:dev": "uv run --directory apps/api fastapi dev app/main.py",
+    "api:test": "uv run --directory apps/api python -m compileall app",
+    "api:lint": "uv run --directory apps/api ruff check app",
+    "api:typecheck": "uv run --directory apps/api mypy app",
+    "api:check": "pnpm api:lint && pnpm api:typecheck"
+  },
+  "packageManager": "pnpm@12.4.2"
+}
