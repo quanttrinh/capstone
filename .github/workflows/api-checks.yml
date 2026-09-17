@@ -1,0 +1,50 @@
+name: API checks
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "apps/api/**"
+      - "package.json"
+      - ".github/actions/setup-python-uv/**"
+      - ".github/workflows/api-checks.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  lint-and-format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Python and uv
+        uses: ./.github/actions/setup-python-uv
+
+      - name: Install API dependencies
+        run: uv sync --directory apps/api
+
+      - name: Run Ruff lint
+        run: uv run --directory apps/api ruff check src/capstone_api
+
+      - name: Run mypy type-check
+        run: uv run --directory apps/api mypy src/capstone_api
+
+      - name: Check Ruff formatting
+        run: uv run --directory apps/api ruff format --check src/capstone_api
+
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Python and uv
+        uses: ./.github/actions/setup-python-uv
+
+      - name: Install API dependencies
+        run: uv sync --directory apps/api
+
+      - name: Run API tests
+        run: uv run --directory apps/api pytest
