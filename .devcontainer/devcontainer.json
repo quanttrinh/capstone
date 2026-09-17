@@ -1,0 +1,25 @@
+{
+  "name": "Capstone",
+  "dockerComposeFile": "../compose.yaml",
+  "service": "workspace",
+  "workspaceFolder": "/workspaces/capstone",
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.14"
+    },
+    "ghcr.io/devcontainers-contrib/features/uv:1": {}
+  },
+  "forwardPorts": [3000, 8000, 5432, 6379],
+  "shutdownAction": "stopCompose",
+  "remoteUser": "node",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.mypy-type-checker",
+        "charliermarsh.ruff"
+      ]
+    }
+  },
+  "postCreateCommand": "pnpm install --frozen-lockfile && uv sync --directory apps/api"
+}
